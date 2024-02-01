@@ -5,7 +5,6 @@ const app = express()
 app.use(express.json())
 const port = 3000
 
-
 const Movies = mongoose.model('Movie',{
     title: String,
     description: String,
@@ -13,16 +12,22 @@ const Movies = mongoose.model('Movie',{
     trailer_url: String
 })
 
+//@desc Buscar todos os filmes
+//@route GET
 app.get("/",async (req,res) => {
     const movies = await Movies.find()
     return res.send(movies)
 })
 
+//@desc Deletar um filme pelo id
+//@route DELETE
 app.delete("/:id", async(req, res) => {
     const movie = await Movies.findByIdAndDelete(req.params.id)
     return res.send(movie) 
 })
 
+//@desc Atualizar um filme pelo id  
+//@route UPDATE
 app.put("/:id", async(req, res) => {
     const movie = await Movies.findByIdAndUpdate(req.params.id, {
         title: req.body.title,
@@ -36,6 +41,8 @@ app.put("/:id", async(req, res) => {
     return res.send(movie)
 })
 
+//@desc Inserir um filme novo 
+//@route POST
 app.post("/", async (req, res) => {
     const movie = new Movies({
         title: req.body.title,
